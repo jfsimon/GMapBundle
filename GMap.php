@@ -14,19 +14,22 @@ class GMap
         $this->geocoder = $geocoder;
     }
 
-    public function geocode($source, array $parameters = array())
+    public function geocode($place, array $parameters = array())
     {
-        if(is_string($source)) {
-            $source = trim($source);
+        if(is_string($place)) {
+            $place = trim($place);
 
-//            if(preg_match('^[0-9.]+ *, *[0-9.]+$', $source, $matches)) {
-//                return $this->geocoder->geocodeLatLng($matches[0], $matches[1], $parameters);
-//            }
+            $matches = null;
+            if(preg_match('/^([0-9.]+) *, *([0-9.]+)$/', $place, $matches) > 1) {
+                return $this->geocoder->geocodeLatLng($matches[1], $matches[2], $parameters);
+            }
 
-            return $this->geocoder->geocodeAddress($source, $parameters);
-        } else if(is_array($source) && count($source) > 1) {
-            return $this->geocoder->geocodeLatLng($source[0], $source[1], $parameters);
+            return $this->geocoder->geocodeAddress($place, $parameters);
+
+        } else if(is_array($place) && count($place) > 1) {
+            return $this->geocoder->geocodeLatLng($place[0], $place[1], $parameters);
         }
+
         throw new \Exception('Wrong source parameter');
     }
 

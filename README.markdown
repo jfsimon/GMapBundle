@@ -5,15 +5,14 @@ GMapBundle : The GMap webservices made easy for your Symfony2 applications
 
 **It works** : This bundle is under Test Driven Developpement control, so every features mentioned below will really work.
 
-**Summary** :
 
--  Installation
--  Run the tests
--  How to use
+First steps
+===========
 
+Before to use the bundle, you have to install it, and optionaly test it (dont forget to post issues on github !).
 
-Installation
-============
+Intall the bundle
+-----------------
 
 1.  Add the sources to your Bundle directory - from the root directory of your project, paste the following command :
 
@@ -29,7 +28,7 @@ You're done !
 
 
 Run the tests
-=============
+-------------
 
 1.  Register the routing - for example, add the following code in your `app/config/routing.yml` file :
     
@@ -52,16 +51,20 @@ This bundle offers a new service accessible from your controller. To access the 
 The geocoder webservice
 -----------------------
 
-This service is used to get latitude / longitude point from an address and vice-versa. For more informations,
-look at the [Google webservice documentation](http://code.google.com/apis/maps/documentation/geocoding/).
+This service is used to get latitude / longitude point from an address and vice-versa.
+It can also be used to normalize and parse addresses. For more informations, look at the
+[Google webservice documentation](http://code.google.com/apis/maps/documentation/geocoding/).
 
-Simple to use, here are the 2 examples :
+Simple to use, here are the examples :
 
-    // get the geocode object from an address
-    $geocode = $gmap->geocode('12 rue Hippolyte Lebas 75009 Paris France');
+    // get the geocode object from an address (wich is really dirty)
+    $geocode = $gmap->geocode('12 rU hipOLYte lBAs 75009 fR');
     
-    // get the geocode object from a latitude / longitude point
+    // get the geocode object from a latitude / longitude array
     $geocode = $gmap->geocode(array(48.8772535, 2.3397612));
+    
+    // get the geocode object from a latitude / longitude string
+    $geocode = $gmap->geocode('48.8772535, 2.3397612');
     
 As second parameter, you can provide an associative array of options :
 
@@ -70,7 +73,12 @@ As second parameter, you can provide an associative array of options :
 -  anguage : The language in which to return results.
 -  sensor (default to false) : Indicates whether or not the geocoding request comes from a device with a location sensor.
     
-With this method, you get a geocode object wich comes with the following methods :
+The `geocode` method retors a `Geocode` object wich comes with several methods to get the data you want.
+See what you can do with geocoder :
+
+**Get the position of an address :**
+
+    $geocode = $this->get('gmap')->geocode('12 Rue Hippolyte Lebas 75009 France');
 
     // get the latitude
     $lat = $geocode->getLat(); // 48.8772535
@@ -78,11 +86,55 @@ With this method, you get a geocode object wich comes with the following methods
     // get the longitude
     $lat = $geocode->getLng(); // 2.3397612
     
-    // get both as an array
-    $arr = $geocode->getLatLng(); // array(48.8772535, 2.3397612)
-    
     // get both as string
-    $str = $geocode->getLatLng(false); // '48.8772535, 2.3397612'
+    $str = $geocode->getLatLng(); // '48.8772535, 2.3397612'
+    
+    // get both as an array
+    $arr = $geocode->getLatLng(true); // array(48.8772535, 2.3397612)
+    
+**Get an address from a position :**
+
+    $geocode = $this->get('gmap')->geocode('48.8772535, 2.3397612');
+    
+    // get the *normalized* address as string
+    $str = $geocode->getAddress(); // 12 Rue Hippolyte Lebas, 75009 Paris, France
+    
+**Normalize an address :**
+    
+    // a dirty address is inputed by a user
+    $geocode = $this->get('gmap')->geocode('12 rU hipOLYte lBAs 75009 fR');
     
     // get the *normalized* address
-    $add = $geocode->getAddress(); // 12 Rue Hippolyte Lebas, 75009 Paris, France
+    $str = $geocode->getAddress(); // 12 Rue Hippolyte Lebas, 75009 Paris, France
+    
+**Address components :**
+
+    $geocode = $this->get('gmap')->geocode('12 Rue Hippolyte Lebas 75009 France');
+    
+    // get the number
+    $str = $geocode->getAddressComponent('street_number'); // '12'
+    
+    // get the city
+    $str = $geocode->getAddressComponent('locality'); // 'Paris'
+    
+    // get the region (for France)
+    $str = $geocode->getAddressComponent('administrative_area_level_1'); // 'Ile-de-France'
+    
+    // get the zip code
+    $str = $geocode->getAddressComponent('postal_code'); // '75009'
+    
+    // get a sublocality
+    $str = $geocode->getAddressComponent('sublocality'); // '9ème Arrondissement Paris'
+    
+And so on ... full list of components available on
+[Google's documentation](http://code.google.com/apis/maps/documentation/geocoding/#Types).
+If a component has several values, it returns an array.
+
+In addition, `getAddressComponent` method take a 2nd boolean argument, wich setted to `true`
+get you the short name. For example :
+
+    // get the country short name
+    $str = $geocode->getAddressComponent('country', true); // 'FR'
+    
+    // get the region (for France) short name
+    $str = $geocode->getAddressComponent('administrative_area_level_1', true); // 'IDF'
