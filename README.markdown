@@ -70,8 +70,11 @@ As second parameter, you can provide an associative array of options :
 
 -  bounds : The bounding box of the viewport within which to bias geocode results more prominently.
 -  region : The region code, specified as a ccTLD ("top-level domain") two-character value.
--  anguage : The language in which to return results.
+-  language : The language in which to return results.
 -  sensor (default to false) : Indicates whether or not the geocoding request comes from a device with a location sensor.
+
+More explanations on these options on
+[Google's documentation](http://code.google.com/apis/maps/documentation/geocoding/#GeocodingRequests).
     
 The `geocode` method retors a `Geocode` object wich comes with several methods to get the data you want.
 See what you can do with geocoder :
@@ -138,3 +141,17 @@ get you the short name. For example :
     
     // get the region (for France) short name
     $str = $geocode->getAddressComponent('administrative_area_level_1', true); // 'IDF'
+    
+**Seeting up your config :**
+
+You want some options in your app/config file dont you ? OK, here is the full example (in YML format of course) :
+
+    gmap.options:
+        geocoder:
+            url: http://maps.googleapis.com/maps/api/geocode # dont need to change
+            format: json # just for the LOL, XML is not implemented yet
+            bounds : ~ # default bounds option for each requests (see below)
+            region : ~ # default region option for each requests (see below)
+            language : ~ # default language option for each requests (see below)
+            sensor : ~ # default sensor option for each requests (see below)
+            
