@@ -1,0 +1,15 @@
+_Tests_GMapBundle_ServiceExists:
+    pattern: /_tests/GMapBundle/ServiceExists
+    defaults: { _controller: GMapBundle:Tests:serviceExists }
+    
+_Tests_GMapBundle_ServiceClass:
+    pattern: /_tests/GMapBundle/ServiceClass
+    defaults: { _controller: GMapBundle:Tests:serviceClass }
+    
+_Tests_GMapBundle_GeocoderLatLng:
+    pattern: /_tests/GMapBundle/GeocoderLatLng/:address
+    defaults: { _controller: GMapBundle:Tests:geocoderLatLng }
+    
+_Tests_GMapBundle_GeocoderAddress:
+    pattern: /_tests/GMapBundle/GeocoderAddress/:lat/:lng
+    defaults: { _controller: GMapBundle:Tests:geocoderAddress }
