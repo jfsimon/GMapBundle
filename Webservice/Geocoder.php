@@ -17,15 +17,15 @@ class Geocoder extends Webservice
 
     public function geocodeAddress($address, array $parameters = array())
     {
-        return $this->call(array_merge($parameters, array('address' => $address)));
+        return $this->geocode(array_merge($parameters, array('address' => $address)));
     }
 
     public function geocodeLatLng($lat, $lng, array $parameters = array())
     {
-        return $this->call(array_merge($parameters, array('latlng' => $lat.','.$lng)));
+        return $this->geocode(array_merge($parameters, array('latlng' => $lat.','.$lng)));
     }
 
-    protected function call(array $parameters)
+    protected function geocode(array $parameters)
     {
         $data = $this->getData(
             $this->options['url'].'/'.$this->options['format'],

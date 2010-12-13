@@ -5,6 +5,8 @@ GMapBundle : The GMap webservices made easy for your Symfony2 applications
 
 **It works** : This bundle is under Test Driven Developpement control, so every features mentioned below will really work.
 
+**Current implementation** : Only the geocoder webservice.
+
 
 First steps
 ===========
@@ -47,6 +49,8 @@ How to use
 This bundle offers a new service accessible from your controller. To access the service, simply use the following code :
 
     $gmap = $this->get('gmap');
+    
+These services are subject to a query limit of 2,500 geolocation requests per day (for each service, is suppose).
     
 The geocoder webservice
 -----------------------

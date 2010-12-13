@@ -2,17 +2,12 @@
 
 namespace Bundle\GMapBundle\Formatter;
 
-class Geocode
+use Bundle\GMapBundle\Formatter\Formatter;
+
+class Geocode extends Formatter
 {
 
-    protected
-        $data,
-        $address;
-
-    public function __construct(array $data)
-    {
-        $this->data = $data['results'][0];
-    }
+    protected $address;
 
     public function getLat()
     {
