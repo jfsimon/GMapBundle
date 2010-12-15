@@ -11,14 +11,20 @@ class GMapExtension extends Extension
 
     public function configLoad($config, ContainerBuilder $container)
     {
+        // load definition
         if (!$container->hasDefinition('gmap')) {
             $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
             $loader->load('gmap.xml');
         }
 
-
-        if(isset($config['geocoder'])) {
-            $container->setParameter('gmap.geocoder.options', array_replace($container->getParameter('gmap.geocoder.options'), $config['geocoder']));
+        // override configuration
+        foreach(array('geocoder', 'polylineencoder') as $service) {
+            if(isset($config[$service])) {
+                $container->setParameter(
+                    'gmap.'.$service.'.options',
+                    array_replace($container->getParameter('gmap.'.$service.'.options'), $config[$service])
+                );
+            }
         }
     }
 

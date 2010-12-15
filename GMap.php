@@ -2,16 +2,22 @@
 
 namespace Bundle\GMapBundle;
 
+use Bundle\GMapBundle\Formatter;
+
 use Bundle\GMapBundle\Webservice\Geocoder;
+use Bundle\GMapBundle\Formatter\PolylineEncoder;
 
 class GMap
 {
 
-    protected $geocoder;
+    protected
+        $geocoder,
+        $polylineEncoder;
 
-    public function __construct(Geocoder $geocoder)
+    public function __construct(Geocoder $geocoder, PolylineEncoder $polylineEncoder)
     {
         $this->geocoder = $geocoder;
+        $this->polylineEncoder = $polylineEncoder;
     }
 
     public function geocode($place, array $parameters = array())
@@ -31,6 +37,11 @@ class GMap
         }
 
         throw new \Exception('Wrong source parameter');
+    }
+
+    public function encodePolyline(array $polyline)
+    {
+        return $this->polylineEncoder->encode($polyline);
     }
 
 }

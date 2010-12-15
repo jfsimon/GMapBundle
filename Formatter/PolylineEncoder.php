@@ -18,7 +18,6 @@ class PolylineEncoder
         $this->options = $options;
         $this->factor = pow(10, $this->options['accuracy']);
         $this->quantum = 1 / $this->factor;
-
         $this->zoomLevelBreaks = array();
 
         for($i = 0; $i < $this->options['levels']; $i ++) {
@@ -26,19 +25,19 @@ class PolylineEncoder
         }
     }
 
-    public function encode($points)
+    public function encode(array $points)
     {
         $absMaxDist = 0;
         $stack = array();
         $dists = array();
 
         if(count($points) > 2) {
-            $stack[] = array(0, count($points)-1);
+            $stack[] = array(0, count($points) - 1);
 
             while(count($stack) > 0) {
                 $current = array_pop($stack);
                 $maxDist = 0;
-                $segmentLength = pow($points[$current[1]][0] - $points[$current[0]][0], 2) + pow($points[$current[1]][1], $points[$current[0]][1], 2);
+                $segmentLength = pow($points[$current[1]][0] - $points[$current[0]][0], 2) + pow($points[$current[1]][1] - $points[$current[0]][1], 2);
 
                 for($i = $current[0]+1; $i < $current[1]; $i++) {
                     $temp = $this->computeDistance($points[$i], $points[$current[0]], $points[$current[1]], $segmentLength);
@@ -147,7 +146,7 @@ class PolylineEncoder
     protected function computeLevel($distance) {
         $level = 0;
 
-        if ($distance > $this->verySmall) {
+        if ($distance > $this->quantum) {
             while($distance < $this->zoomLevelBreaks[$level]) {
                 $level++;
             }
@@ -169,7 +168,7 @@ class PolylineEncoder
 
             if($u <= 0) {
                 $distance = sqrt(pow($p0[0] - $p1[0],2) + pow($p0[1] - $p1[1], 2));
-            } else if ($u >= 1) {
+            } elseif ($u >= 1) {
                 $distance = sqrt(pow($p0[0] - $p2[0],2) + pow($p0[1] - $p2[1], 2));
             } else {
                 $distance = sqrt(pow($p0[0] - $p1[0] - $u * ($p2[0] - $p1[0]), 2) + pow($p0[1] - $p1[1] - $u * ($p2[1] - $p1[1]), 2));

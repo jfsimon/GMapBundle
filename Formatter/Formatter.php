@@ -2,8 +2,6 @@
 
 namespace Bundle\GMapBundle\Formatter;
 
-use Bundle\GMapBundle\Encoder\Polyline;
-
 abstract class Formatter
 {
 
@@ -26,12 +24,6 @@ abstract class Formatter
     public function isOk()
     {
         return $this->status === 'OK';
-    }
-
-    protected function encodePolyline(array $points, array $options = array())
-    {
-        $encoder = new Polyline($options);
-        return $encoder->encode($points);
     }
 
 }

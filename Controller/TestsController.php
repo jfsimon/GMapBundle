@@ -3,6 +3,7 @@
 namespace Bundle\GMapBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Bundle\GMapBundle\Formatter\PolylineEncoder;
 
 class TestsController extends Controller
 {
@@ -77,6 +78,18 @@ class TestsController extends Controller
             $geocoder->getAddressComponent('administrative_area_level_1', true),
             $geocoder->getAddressComponent('administrative_area_level_2', true),
         )));
+    }
+
+    public function polylineEncoderAction()
+    {
+        $polyline = array(
+            array(48.8772535, 2.3397612),
+            array(45.8772535, 3.3397612),
+            array(43.8772535, 5.3397612),
+            array(42.8772535, 8.3397612),
+        );
+        $encoded = $this->get('gmap')->encodePolyline($polyline);
+        return $this->createResponse($encoded['points']."\n".$encoded['levels']);
     }
 
 }

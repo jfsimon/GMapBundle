@@ -5,7 +5,9 @@
     xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+    	
     	<parameter key="gmap.class">Bundle\GMapBundle\GMap</parameter>
+		
 		<parameter key="gmap.geocoder.class">Bundle\GMapBundle\Webservice\Geocoder</parameter>
         <parameter key="gmap.geocoder.options" type="collection">
             <parameter key="url">http://maps.googleapis.com/maps/api/geocode</parameter>
@@ -15,14 +17,31 @@
 			<parameter key="region"></parameter>
 			<parameter key="bounds"></parameter>
         </parameter>
+		
+		<parameter key="gmap.polylineencoder.class">Bundle\GMapBundle\Formatter\PolylineEncoder</parameter>
+		<parameter key="gmap.polylineencoder.options" type="collection">
+            <parameter key="accuracy">5</parameter>
+            <parameter key="levels">4</parameter>
+            <parameter key="zoom">3</parameter>
+            <parameter key="endpoints">true</parameter>
+        </parameter>
+		
     </parameters>
 
     <services>
+    	
     	<service id="gmap.geocoder" class="%gmap.geocoder.class%">
             <argument>%gmap.geocoder.options%</argument>
         </service>
+		
+		<service id="gmap.polylineEncoder" class="%gmap.polylineEncoder.class%">
+            <argument>%gmap.polylineEncoder.options%</argument>
+        </service>
+		
     	<service id="gmap" class="%gmap.class%">
 			<argument type="service" id="gmap.geocoder" />
+			<argument type="service" id="gmap.polylineEncoder" />
         </service>
+		
     </services>
 </container>

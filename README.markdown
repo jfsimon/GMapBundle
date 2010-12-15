@@ -5,7 +5,10 @@ GMapBundle : The GMap webservices made easy for your Symfony2 applications
 
 **It works** : This bundle is under Test Driven Developpement control, so every features mentioned below will really work.
 
-**Current implementation** : Only the geocoder webservice.
+**Current implementation** : Just include (for now) the following services :
+
+-  The geocoder webservice
+-  The polyline encocing
 
 
 First steps
@@ -80,10 +83,10 @@ As second parameter, you can provide an associative array of options :
 More explanations on these options on
 [Google's documentation](http://code.google.com/apis/maps/documentation/geocoding/#GeocodingRequests).
     
-The `geocode` method retors a `Geocode` object wich comes with several methods to get the data you want.
+The `geocode` method returns a `Geocode` object wich comes with several methods to get the data you want.
 See what you can do with geocoder :
 
-**Get the position of an address :**
+###Get the position of an address :
 
     $geocode = $this->get('gmap')->geocode('12 Rue Hippolyte Lebas 75009 France');
 
@@ -99,14 +102,14 @@ See what you can do with geocoder :
     // get both as an array
     $arr = $geocode->getLatLng(true); // array(48.8772535, 2.3397612)
     
-**Get an address from a position :**
+###Get an address from a position :
 
     $geocode = $this->get('gmap')->geocode('48.8772535, 2.3397612');
     
     // get the *normalized* address as string
     $str = $geocode->getAddress(); // 12 Rue Hippolyte Lebas, 75009 Paris, France
     
-**Normalize an address :**
+###Normalize an address :
     
     // a dirty address is inputed by a user
     $geocode = $this->get('gmap')->geocode('12 rU hipOLYte lBAs 75009 fR');
@@ -114,7 +117,7 @@ See what you can do with geocoder :
     // get the *normalized* address
     $str = $geocode->getAddress(); // 12 Rue Hippolyte Lebas, 75009 Paris, France
     
-**Address components :**
+###Address components :
 
     $geocode = $this->get('gmap')->geocode('12 Rue Hippolyte Lebas 75009 France');
     
@@ -146,7 +149,7 @@ get you the short name. For example :
     // get the region (for France) short name
     $str = $geocode->getAddressComponent('administrative_area_level_1', true); // 'IDF'
     
-**Seeting up your config :**
+###Setting up your config :
 
 You want some options in your app/config file dont you ? OK, here is the full example (in YML format of course) :
 
@@ -154,8 +157,33 @@ You want some options in your app/config file dont you ? OK, here is the full ex
         geocoder:
             url: http://maps.googleapis.com/maps/api/geocode # dont need to change
             format: json # just for the LOL, XML is not implemented yet
-            bounds : ~ # default bounds option for each requests (see below)
-            region : ~ # default region option for each requests (see below)
-            language : ~ # default language option for each requests (see below)
-            sensor : ~ # default sensor option for each requests (see below)
+            bounds : ~ # default bounds option for each requests (see above)
+            region : ~ # default region option for each requests (see above)
+            language : ~ # default language option for each requests (see above)
+            sensor : ~ # default sensor option for each requests (see above)
             
+
+The polyline encoder service
+----------------------------
+
+This service is used in background by other services to compress a list of lat/lng points. It's accessible in the
+controller with th following method :
+
+    $encoded = $this->get('gmap')->encodePolyline($polyline);
+    
+Where `$polyline` is an array of points, each points is an array of 2 values : lat and lng ; and `$encoded` is an
+associative array with 2 keys : 'points' (the encoded points) and 'levels' (the encoded levels).
+
+###Setting up your config :
+
+Some options are available, here is an exemple with the YML format :
+
+    gmap.options:
+        polylineencoder:
+            accuracy: 5 # should not be changed !
+            levels: 4 # the lesvels number (called numLevels in the Google's documentation)
+            zoom: 3 # the zoom factor
+            endpoints: true # indicate if endpoints should be forced
+            
+You can read more about in this stuff in the 
+[Google's documentation](http://code.google.com/apis/maps/documentation/utilities/polylinealgorithm.html).

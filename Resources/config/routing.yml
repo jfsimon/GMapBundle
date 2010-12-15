@@ -37,3 +37,7 @@ _Tests_GMapBundle_GeocoderComponents2:
 _Tests_GMapBundle_GeocoderComponents3:
     pattern: /_tests/GMapBundle/GeocoderComponents3/:address
     defaults: { _controller: GMapBundle:Tests:geocoderComponents3 }
+    
+_Tests_GMapBundle_PolylineEncoder:
+    pattern: /_tests/GMapBundle/PolylineEncoder
+    defaults: { _controller: GMapBundle:Tests:polylineEncoder }
