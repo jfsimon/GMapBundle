@@ -2,8 +2,11 @@
 
 namespace Bundle\GMapBundle\Controller;
 
+use Bundle\GMapBundle\Formatter;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Bundle\GMapBundle\Formatter\PolylineEncoder;
+use Bundle\GMapBundle\Webservice\Elevation;
 
 class TestsController extends Controller
 {
@@ -90,6 +93,21 @@ class TestsController extends Controller
         );
         $encoded = $this->get('gmap')->encodePolyline($polyline);
         return $this->createResponse($encoded['points']."\n".$encoded['levels']);
+    }
+
+    public function elevationIterationAction()
+    {
+        $points = array(
+            array(48.8772535, 2.3397612),
+            array(45.8772535, 3.3397612),
+            array(43.8772535, 5.3397612),
+            array(42.8772535, 8.3397612),
+        );
+        $result = array();
+        foreach($this->get('gmap')->elevation($points) as $elevation) {
+            $result[] = $elevation['elevation'];
+        }
+        return $this->createResponse(implode("\n", $result));
     }
 
 }

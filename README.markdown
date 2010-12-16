@@ -9,6 +9,7 @@ GMapBundle : The GMap webservices made easy for your Symfony2 applications
 
 -  The geocoder webservice
 -  The polyline encocing
+-  The elevation webservice
 
 
 First steps
@@ -179,7 +180,7 @@ associative array with 2 keys : 'points' (the encoded points) and 'levels' (the 
 Some options are available, here is an exemple with the YML format :
 
     gmap.options:
-        polylineencoder:
+        polyline_encoder:
             accuracy: 5 # should not be changed !
             levels: 4 # the lesvels number (called numLevels in the Google's documentation)
             zoom: 3 # the zoom factor
@@ -187,3 +188,20 @@ Some options are available, here is an exemple with the YML format :
             
 You can read more about in this stuff in the 
 [Google's documentation](http://code.google.com/apis/maps/documentation/utilities/polylinealgorithm.html).
+
+
+The elevation webservice
+------------------------
+
+This service is used to get the elevations from a list of pointd (lat/lng). The result object is an iterator over
+the result, wich give acces to a list of arrays having the following keys: 'location', 'lat', 'lng', 'elevation'.
+
+    $iterator = $this->get('gmap')->elevation($points);
+    
+The configuration is deadly simple :
+    
+    gmap.options:
+        elevation:
+            url: http://maps.googleapis.com/maps/api/elevation # dont need to be changed
+            format: json # just for the LOL, XML is not implemented yet
+            sensor : ~ # default sensor option for each requests (as usual)

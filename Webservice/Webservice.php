@@ -2,13 +2,34 @@
 
 namespace Bundle\GMapBundle\Webservice;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 abstract class Webservice
 {
 
-    protected function getData($url, array $parameters, $format)
+    protected
+        $container,
+        $options;
+
+    public function __construct(ContainerInterface $container, array $options)
     {
-        $response = $this->callWebservice($url, $parameters);
-        return $this->parseResponse($response, $format);
+        $this->container = $container;
+        $this->options = $options;
+    }
+
+    protected function get($service)
+    {
+        return $this->container->get('gmap.'.$service);
+    }
+
+    protected function getData($parameters)
+    {
+        $response = $this->callWebservice(
+            $this->options['url'].'/'.$this->options['format'],
+            array_merge($this->getDefaultParameters(), $parameters)
+        );
+
+        return $this->parseResponse($response, $this->options['format']);
     }
 
     protected function callWebservice($url, array $parameters)
@@ -38,6 +59,14 @@ abstract class Webservice
             default:
                 throw new \Exception('Unkwown format : '.$format);
         }
+    }
+
+    abstract protected function getDefaultParameters();
+
+    protected function encodePolyline(array $polyline)
+    {
+        $encoded = $this->get('polyline_encoder')->encode($polyline);
+        return 'enc:'.$encoded['points'];
     }
 
 }

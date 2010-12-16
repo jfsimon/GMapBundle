@@ -4,7 +4,7 @@ namespace Bundle\GMapBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class GeocoderTests extends WebTestCase
+class PolylineEncoderTests extends WebTestCase
 {
 
     public function testPolylineEncoder()

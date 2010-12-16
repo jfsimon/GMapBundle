@@ -18,8 +18,8 @@ class GMapExtension extends Extension
         }
 
         // override configuration
-        foreach(array('geocoder', 'polylineencoder') as $service) {
-            if(isset($config[$service])) {
+        foreach(array('polyline_encoder', 'geocoder', 'elevation') as $service) {
+            if(isset($config[$service]) && is_array($config[$service])) {
                 $container->setParameter(
                     'gmap.'.$service.'.options',
                     array_replace($container->getParameter('gmap.'.$service.'.options'), $config[$service])

@@ -2,22 +2,28 @@
 
 namespace Bundle\GMapBundle;
 
-use Bundle\GMapBundle\Formatter;
-
+use Bundle\GMapBundle\Encoder\PolylineEncoder;
 use Bundle\GMapBundle\Webservice\Geocoder;
-use Bundle\GMapBundle\Formatter\PolylineEncoder;
+use Bundle\GMapBundle\Webservice\Elevation;
 
 class GMap
 {
 
     protected
+        $polylineEncoder,
         $geocoder,
-        $polylineEncoder;
+        $elevation;
 
-    public function __construct(Geocoder $geocoder, PolylineEncoder $polylineEncoder)
+    public function __construct(PolylineEncoder $polylineEncoder, Geocoder $geocoder, Elevation $elevation)
     {
-        $this->geocoder = $geocoder;
         $this->polylineEncoder = $polylineEncoder;
+        $this->geocoder = $geocoder;
+        $this->elevation = $elevation;
+    }
+
+    public function encodePolyline(array $polyline)
+    {
+        return $this->polylineEncoder->encode($polyline);
     }
 
     public function geocode($place, array $parameters = array())
@@ -39,9 +45,13 @@ class GMap
         throw new \Exception('Wrong source parameter');
     }
 
-    public function encodePolyline(array $polyline)
+    public function elevation(array $pathOrLocations, array $options = array())
     {
-        return $this->polylineEncoder->encode($polyline);
+        if(count($pathOrLocations) == 3 && is_int($pathOrLocations[2])) {
+            return $this->elevation->pathElevation($pathOrLocations[0], $pathOrLocations[1], $pathOrLocations[2], $options);
+        }
+
+        return $this->elevation->locationsElevation($pathOrLocations, $options);
     }
 
 }

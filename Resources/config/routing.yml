@@ -41,3 +41,7 @@ _Tests_GMapBundle_GeocoderComponents3:
 _Tests_GMapBundle_PolylineEncoder:
     pattern: /_tests/GMapBundle/PolylineEncoder
     defaults: { _controller: GMapBundle:Tests:polylineEncoder }
+    
+_Tests_GMapBundle_ElevationIteration:
+    pattern: /_tests/GMapBundle/ElevationIteration
+    defaults: { _controller: GMapBundle:Tests:elevationIteration }

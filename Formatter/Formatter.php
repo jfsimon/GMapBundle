@@ -12,13 +12,13 @@ abstract class Formatter
         $this->status = $data['status'];
 
         if($this->isOk()) {
-            $this->data = $data['results'][0];
+            $this->data = count($data['results']) > 1 ? $data['results'] : $data['results'][0];
         }
     }
 
     public function getStatus()
     {
-        return $this->status();
+        return $this->status;
     }
 
     public function isOk()
