@@ -2,28 +2,55 @@
 
 namespace Bundle\GMapBundle\Formatter;
 
-abstract class Formatter
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+class Formatter implements \Iterator
 {
 
-    protected $data, $status;
+    protected
+        $container,
+        $result,
+        $valid;
 
-    public function __construct(array $data)
+    public function __construct(ContainerInterface $container, array $result)
     {
-        $this->status = $data['status'];
-
-        if($this->isOk()) {
-            $this->data = count($data['results']) > 1 ? $data['results'] : $data['results'][0];
-        }
+        $this->container = $container;
+        $this->result = $result;
     }
 
-    public function getStatus()
+    public function isCollection()
     {
-        return $this->status;
+        return false;
     }
 
-    public function isOk()
+    public function rewind()
     {
-        return $this->status === 'OK';
+        $this->valid = true;
+    }
+
+    public function next()
+    {
+        $this->valid = false;
+    }
+
+    public function valid()
+    {
+        return $this->valid;
+    }
+
+    public function current()
+    {
+        return $this;
+    }
+
+    public function key()
+    {
+        return 0;
+    }
+
+    protected function getService($id)
+    {
+        return $this->container->get('gmap.'.$id);
     }
 
 }

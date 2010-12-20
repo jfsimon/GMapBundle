@@ -18,18 +18,27 @@
 		
 		<parameter key="gmap.geocoder.class">Bundle\GMapBundle\Webservice\Geocoder</parameter>
         <parameter key="gmap.geocoder.options" type="collection">
+        	<!-- service configuration -->
             <parameter key="url">http://maps.googleapis.com/maps/api/geocode</parameter>
 			<parameter key="format">json</parameter>
+			<parameter key="formatter">Bundle\GMapBundle\Formatter\Geocode</parameter>
+            <parameter key="collection">Bundle\GMapBundle\Formatter\GeocodeCollection</parameter>
+			<!-- default parameters -->
 			<parameter key="sensor">false</parameter>
 			<parameter key="language"></parameter>
 			<parameter key="region"></parameter>
 			<parameter key="bounds"></parameter>
         </parameter>
 		
+		
 		<parameter key="gmap.elevation.class">Bundle\GMapBundle\Webservice\Elevation</parameter>
         <parameter key="gmap.elevation.options" type="collection">
+        	<!-- service configuration -->
             <parameter key="url">http://maps.googleapis.com/maps/api/elevation</parameter>
             <parameter key="format">json</parameter>
+			<parameter key="formatter">Bundle\GMapBundle\Formatter\Elevation</parameter>
+            <parameter key="collection">Bundle\GMapBundle\Formatter\ElevationCollection</parameter>
+			<!-- default parameters -->
             <parameter key="sensor">false</parameter>
         </parameter>
 		

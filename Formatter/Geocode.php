@@ -4,19 +4,19 @@ namespace Bundle\GMapBundle\Formatter;
 
 use Bundle\GMapBundle\Formatter\Formatter;
 
-class Geocode extends Formatter
+class Geocode extends Formatter implements \Iterator
 {
 
     protected $address;
 
     public function getLat()
     {
-        return (float)$this->data['geometry']['location']['lat'];
+        return (float)$this->result['geometry']['location']['lat'];
     }
 
     public function getLng()
     {
-        return (float)$this->data['geometry']['location']['lng'];
+        return (float)$this->result['geometry']['location']['lng'];
     }
 
     public function getLatLng($array = false)
@@ -30,7 +30,12 @@ class Geocode extends Formatter
 
     public function getAddress()
     {
-        return $this->data['formatted_address'];
+        return $this->result['formatted_address'];
+    }
+
+    public function getTypes()
+    {
+        return $this->result['types'];
     }
 
     public function getAddressComponents($shortcut = false)
@@ -66,7 +71,7 @@ class Geocode extends Formatter
 
         $this->address = array();
 
-        foreach($this->data['address_components'] as $component) {
+        foreach($this->result['address_components'] as $component) {
             foreach($component['types'] as $type) {
                 if(! isset($this->address[$type])) {
                     $this->address[$type] = array(

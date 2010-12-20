@@ -23,63 +23,71 @@ class TestsController extends Controller
 
     public function geocoderAddress1Action($address)
     {
-        $geocoder = $this->get('gmap')->geocode($address);
-        return $this->createResponse($geocoder->getLatLng(false));
+        $result = $this->get('gmap')->geocode($address);
+        $result = $this->getFirstStreetAddress($result);
+        return $this->createResponse($result->getLatLng(false));
     }
 
     public function geocoderAddress2Action($address)
     {
-        $geocoder = $this->get('gmap')->geocode($address);
-        return $this->createResponse(implode("\n", $geocoder->getLatLng(true)));
+        $result = $this->get('gmap')->geocode($address);
+        $result = $this->getFirstStreetAddress($result);
+        return $this->createResponse(implode("\n", $result->getLatLng(true)));
     }
 
     public function geocoderLatLng1Action($lat, $lng)
     {
-        $geocoder = $this->get('gmap')->geocode(array($lat, $lng));
-        return $this->createResponse($geocoder->getAddress());
+        $result = $this->get('gmap')->geocode(array($lat, $lng));
+        $result = $this->getFirstStreetAddress($result);
+        return $this->createResponse($result->getAddress());
     }
 
     public function geocoderLatLng2Action($lat, $lng)
     {
-        $geocoder = $this->get('gmap')->geocode(array($lat, $lng));
-        return $this->createResponse($geocoder->getAddress(true));
+        $result = $this->get('gmap')->geocode(array($lat, $lng));
+        $result = $this->getFirstStreetAddress($result);
+        return $this->createResponse($result->getAddress(true));
     }
 
     public function geocoderLatLng3Action($latLng)
     {
-        $geocoder = $this->get('gmap')->geocode($latLng);
-        return $this->createResponse($geocoder->getAddress());
+        $result = $this->get('gmap')->geocode($latLng);
+        $result = $this->getFirstStreetAddress($result);
+        return $this->createResponse($result->getAddress());
     }
 
     public function geocoderComponents1Action($address)
     {
-        $geocoder = $this->get('gmap')->geocode($address);
+        $result = $this->get('gmap')->geocode($address);
+        $result = $this->getFirstStreetAddress($result);
         return $this->createResponse(implode("\n", array(
-            $geocoder->getAddressComponent('street_number'),
-            $geocoder->getAddressComponent('route'),
-            $geocoder->getAddressComponent('postal_code'),
-            $geocoder->getAddressComponent('locality'),
-            $geocoder->getAddressComponent('country'),
+            $result->getAddressComponent('street_number'),
+            $result->getAddressComponent('route'),
+            $result->getAddressComponent('postal_code'),
+            $result->getAddressComponent('locality'),
+            $result->getAddressComponent('country'),
         )));
     }
 
     public function geocoderComponents2Action($address)
     {
-        $geocoder = $this->get('gmap')->geocode($address);
+        $result = $this->get('gmap')->geocode($address);
+        $result = $this->getFirstStreetAddress($result);
         return $this->createResponse(implode("\n", array(
-            $geocoder->getAddressComponent('administrative_area_level_1'),
-            $geocoder->getAddressComponent('administrative_area_level_2'),
-            $geocoder->getAddressComponent('sublocality'),
+            $result->getAddressComponent('administrative_area_level_1'),
+            $result->getAddressComponent('administrative_area_level_2'),
+            $result->getAddressComponent('sublocality'),
         )));
     }
 
     public function geocoderComponents3Action($address)
     {
-        $geocoder = $this->get('gmap')->geocode($address);
+        $result = $this->get('gmap')->geocode($address);
+        $result = $this->getFirstStreetAddress($result);
         return $this->createResponse(implode("\n", array(
-            $geocoder->getAddressComponent('country', true),
-            $geocoder->getAddressComponent('administrative_area_level_1', true),
-            $geocoder->getAddressComponent('administrative_area_level_2', true),
+            $result->getAddressComponent('country', true),
+            $result->getAddressComponent('administrative_area_level_1', true),
+            $result->getAddressComponent('administrative_area_level_2', true),
         )));
     }
 
@@ -105,9 +113,19 @@ class TestsController extends Controller
         );
         $result = array();
         foreach($this->get('gmap')->elevation($points) as $elevation) {
-            $result[] = $elevation['elevation'];
+            $result[] = $elevation->getElevation();
         }
         return $this->createResponse(implode("\n", $result));
+    }
+
+
+
+    protected function getFirstStreetAddress($result)
+    {
+        if($result->isCollection()) {
+            return $result->filterType('street_address')->getOne(0);
+        }
+        return $result;
     }
 
 }

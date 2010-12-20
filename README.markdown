@@ -1,5 +1,5 @@
 GMapBundle : The GMap webservices made easy for your Symfony2 applications
-==========================================================================
+--------------------------------------------------------------------------
 
 **In progress** : This bundle is under active developpement, new features will be regularly appended.
 
@@ -8,14 +8,17 @@ GMapBundle : The GMap webservices made easy for your Symfony2 applications
 **Current implementation** : Just include (for now) the following services :
 
 -  The geocoder webservice
--  The polyline encocing
 -  The elevation webservice
+-  The polyline encocing
+
+**Current branch** : Full refactoring with a better approach.
 
 
-First steps
-===========
+The basics
+==========
 
 Before to use the bundle, you have to install it, and optionaly test it (dont forget to post issues on github !).
+
 
 Intall the bundle
 -----------------
@@ -44,164 +47,41 @@ Run the tests
 2.  Run the tests with phpunit, the following tests are available :
     
         phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/ServiceTests.php
+        phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/PolylineEncoderTests.php
         phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/GeocoderTests.php
+        phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/ElevationTests.php
         
    
 How to use
-==========
+----------
 
 This bundle offers a new service accessible from your controller. To access the service, simply use the following code :
 
     $gmap = $this->get('gmap');
     
 These services are subject to a query limit of 2,500 geolocation requests per day (for each service, is suppose).
-    
-The geocoder webservice
------------------------
-
-This service is used to get latitude / longitude point from an address and vice-versa.
-It can also be used to normalize and parse addresses. For more informations, look at the
-[Google webservice documentation](http://code.google.com/apis/maps/documentation/geocoding/).
-
-Simple to use, here are the examples :
-
-    // get the geocode object from an address (wich is really dirty)
-    $geocode = $gmap->geocode('12 rU hipOLYte lBAs 75009 fR');
-    
-    // get the geocode object from a latitude / longitude array
-    $geocode = $gmap->geocode(array(48.8772535, 2.3397612));
-    
-    // get the geocode object from a latitude / longitude string
-    $geocode = $gmap->geocode('48.8772535, 2.3397612');
-    
-As second parameter, you can provide an associative array of options :
-
--  bounds : The bounding box of the viewport within which to bias geocode results more prominently.
--  region : The region code, specified as a ccTLD ("top-level domain") two-character value.
--  language : The language in which to return results.
--  sensor (default to false) : Indicates whether or not the geocoding request comes from a device with a location sensor.
-
-More explanations on these options on
-[Google's documentation](http://code.google.com/apis/maps/documentation/geocoding/#GeocodingRequests).
-    
-The `geocode` method returns a `Geocode` object wich comes with several methods to get the data you want.
-See what you can do with geocoder :
-
-###Get the position of an address :
-
-    $geocode = $this->get('gmap')->geocode('12 Rue Hippolyte Lebas 75009 France');
-
-    // get the latitude
-    $lat = $geocode->getLat(); // 48.8772535
-    
-    // get the longitude
-    $lat = $geocode->getLng(); // 2.3397612
-    
-    // get both as string
-    $str = $geocode->getLatLng(); // '48.8772535, 2.3397612'
-    
-    // get both as an array
-    $arr = $geocode->getLatLng(true); // array(48.8772535, 2.3397612)
-    
-###Get an address from a position :
-
-    $geocode = $this->get('gmap')->geocode('48.8772535, 2.3397612');
-    
-    // get the *normalized* address as string
-    $str = $geocode->getAddress(); // 12 Rue Hippolyte Lebas, 75009 Paris, France
-    
-###Normalize an address :
-    
-    // a dirty address is inputed by a user
-    $geocode = $this->get('gmap')->geocode('12 rU hipOLYte lBAs 75009 fR');
-    
-    // get the *normalized* address
-    $str = $geocode->getAddress(); // 12 Rue Hippolyte Lebas, 75009 Paris, France
-    
-###Address components :
-
-    $geocode = $this->get('gmap')->geocode('12 Rue Hippolyte Lebas 75009 France');
-    
-    // get the number
-    $str = $geocode->getAddressComponent('street_number'); // '12'
-    
-    // get the city
-    $str = $geocode->getAddressComponent('locality'); // 'Paris'
-    
-    // get the region (for France)
-    $str = $geocode->getAddressComponent('administrative_area_level_1'); // 'Ile-de-France'
-    
-    // get the zip code
-    $str = $geocode->getAddressComponent('postal_code'); // '75009'
-    
-    // get a sublocality
-    $str = $geocode->getAddressComponent('sublocality'); // '9ème Arrondissement Paris'
-    
-And so on ... full list of components available on
-[Google's documentation](http://code.google.com/apis/maps/documentation/geocoding/#Types).
-If a component has several values, it returns an array.
-
-In addition, `getAddressComponent` method take a 2nd boolean argument, wich setted to `true`
-get you the short name. For example :
-
-    // get the country short name
-    $str = $geocode->getAddressComponent('country', true); // 'FR'
-    
-    // get the region (for France) short name
-    $str = $geocode->getAddressComponent('administrative_area_level_1', true); // 'IDF'
-    
-###Setting up your config :
-
-You want some options in your app/config file dont you ? OK, here is the full example (in YML format of course) :
-
-    gmap.options:
-        geocoder:
-            url: http://maps.googleapis.com/maps/api/geocode # dont need to change
-            format: json # just for the LOL, XML is not implemented yet
-            bounds : ~ # default bounds option for each requests (see above)
-            region : ~ # default region option for each requests (see above)
-            language : ~ # default language option for each requests (see above)
-            sensor : ~ # default sensor option for each requests (see above)
-            
-
-The polyline encoder service
-----------------------------
-
-This service is used in background by other services to compress a list of lat/lng points. It's accessible in the
-controller with th following method :
-
-    $encoded = $this->get('gmap')->encodePolyline($polyline);
-    
-Where `$polyline` is an array of points, each points is an array of 2 values : lat and lng ; and `$encoded` is an
-associative array with 2 keys : 'points' (the encoded points) and 'levels' (the encoded levels).
-
-###Setting up your config :
-
-Some options are available, here is an exemple with the YML format :
-
-    gmap.options:
-        polyline_encoder:
-            accuracy: 5 # should not be changed !
-            levels: 4 # the lesvels number (called numLevels in the Google's documentation)
-            zoom: 3 # the zoom factor
-            endpoints: true # indicate if endpoints should be forced
-            
-You can read more about in this stuff in the 
-[Google's documentation](http://code.google.com/apis/maps/documentation/utilities/polylinealgorithm.html).
 
 
-The elevation webservice
-------------------------
+The webservices
+===============
 
-This service is used to get the elevations from a list of pointd (lat/lng). The result object is an iterator over
-the result, wich give acces to a list of arrays having the following keys: 'location', 'lat', 'lng', 'elevation'.
 
-    $iterator = $this->get('gmap')->elevation($points);
-    
-The configuration is deadly simple :
-    
-    gmap.options:
-        elevation:
-            url: http://maps.googleapis.com/maps/api/elevation # dont need to be changed
-            format: json # just for the LOL, XML is not implemented yet
-            sensor : ~ # default sensor option for each requests (as usual)
+Configuration
+-------------
+
+**Will be written tomorrow**
+
+
+The response
+------------
+
+-  If a request is denied or malformed, it raises an Exception
+-  If a request returns no result it raises an Exception
+-  If a request returns one result, you get a `Formatter` object
+-  If a request returns more tha one result, you get a `Collection` object
+-  `Collection` objects are Iterable and, for convenience, `Formatter` objects are Iterable too.
+-  Iterate over a `Collection` object give you `Formatter` objects.
+-  Each webservice returns his own `Formatter` and `Collection` objects with convenient methods.
+
+
+**To be continued**

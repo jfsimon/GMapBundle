@@ -3,70 +3,62 @@
 namespace Bundle\GMapBundle\Webservice;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Bundle\GMapBundle\Webservice\Request;
+use Bundle\GMapBundle\Webservice\Response;
+use Bundle\GMapBundle\Webservice\Exception;
 
 abstract class Webservice
 {
 
     protected
         $container,
-        $options;
+        $baseUrl,
+        $responseFormat,
+        $formatterClass,
+        $collectionClass,
+        $defaultParameters,
+        $request;
 
     public function __construct(ContainerInterface $container, array $options)
     {
         $this->container = $container;
-        $this->options = $options;
+
+        $this->baseUrl = $options['url'];
+        $this->responseFormat = $options['format'];
+        $this->formatterClass = $options['formatter'];
+        $this->collectionClass = $options['collection'];
+
+        unset($options['url'], $options['format'], $options['formatter'], $options['collection']);
+
+        $this->defaultParameters = $options;
+        $this->request = new Request($this->baseUrl, $this->responseFormat);
     }
 
-    protected function get($service)
+    protected function call(array $parameters)
     {
-        return $this->container->get('gmap.'.$service);
-    }
+        $this->request->setParameters(array_merge($this->defaultParameters, $parameters));
+        $response = new Response($this->request->send(), $this->responseFormat);
 
-    protected function getData($parameters)
-    {
-        $response = $this->callWebservice(
-            $this->options['url'].'/'.$this->options['format'],
-            array_merge($this->getDefaultParameters(), $parameters)
-        );
-
-        return $this->parseResponse($response, $this->options['format']);
-    }
-
-    protected function callWebservice($url, array $parameters)
-    {
-        if(count($parameters) > 0) {
-            $query = array();
-
-            foreach($parameters as $key => $value) {
-                if($value) {
-                    $query[] = $key.'='.urlencode($value);
-                }
-            }
-
-            $url .= '?'.implode('&', $query);
+        if(! $response->isOk()) {
+            throw new Exception($response->getStatus());
         }
 
-        return file_get_contents($url);
-    }
-
-    protected function parseResponse($response, $format)
-    {
-        switch($format) {
-            case 'xml':
-                throw new \Exception('Not implemented');
-            case 'json':
-                return json_decode($response, true);
-            default:
-                throw new \Exception('Unkwown format : '.$format);
+        if($response->isCollection()) {
+            return new $this->collectionClass($this->container, $response->getResult(), $this->formatterClass);
         }
+        return new $this->formatterClass($this->container, $response->getResult(0));
     }
 
-    abstract protected function getDefaultParameters();
+    protected function getService($id)
+    {
+        return $this->container->get('gmap.'.$id);
+    }
 
     protected function encodePolyline(array $polyline)
     {
-        $encoded = $this->get('polyline_encoder')->encode($polyline);
-        return 'enc:'.$encoded['points'];
+        // TODO: get a better way to do this !
+        $encoding = $this->getService('polyline_encoder')->encode($polyline);
+        return 'enc:'.$encoding['points'];
     }
 
 }
