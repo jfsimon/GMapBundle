@@ -6,6 +6,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Bundle\GMapBundle\Webservice\Request;
 use Bundle\GMapBundle\Webservice\Response;
 use Bundle\GMapBundle\Webservice\Exception;
+use Bundle\GMapBundle\Exception\InvalidRequestException;
+use Bundle\GMapBundle\Exception\OverQueryLimitException;
+use Bundle\GMapBundle\Exception\RequestDeniedException;
+use Bundle\GMapBundle\Exception\ZeroResultsException;
 
 abstract class Webservice
 {
@@ -40,7 +44,12 @@ abstract class Webservice
         $response = new Response($this->request->send(), $this->responseFormat);
 
         if(! $response->isOk()) {
-            throw new Exception($response->getStatus());
+            switch($response->getStatus()) {
+                case Response::INVALID_REQUEST: throw new InvalidRequestException();
+                case Response::OVER_QUERY_LIMIT: throw new OverQueryLimitException();
+                case Response::REQUEST_DENIED: throw new RequestDeniedException();
+                case Response::ZERO_RESULTS: throw new ZeroResultsException();
+            }
         }
 
         if($response->isCollection()) {
