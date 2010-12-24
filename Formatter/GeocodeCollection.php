@@ -3,6 +3,7 @@
 namespace Bundle\GMapBundle\Formatter;
 
 use Bundle\GMapBundle\Formatter\Collection;
+use Bundle\GMapBundle\Exception\ZeroResultsException;
 
 class GeocodeCollection extends Collection implements \Iterator
 {
@@ -23,8 +24,7 @@ class GeocodeCollection extends Collection implements \Iterator
             }
         }
 
-        $this->results = $results;
-        return $this;
+        return $this->setResults($results);
     }
 
 }

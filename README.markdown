@@ -222,7 +222,7 @@ The `Formatter` result object has 4 methods :
 
 -  `getLat()` : returns the latitude
 -  `getLng()` : returns the longitude
--  `getLatLng()` : returns an array
+-  `getLatLng($array = false)` : returns the lat/lng as string or array
 -  `getElevation()` : returns the elevation (float)
 
     $elevations = $this->get('gmap')->elevation($points);

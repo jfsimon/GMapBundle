@@ -4,7 +4,7 @@ namespace Bundle\GMapBundle\Formatter;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class Formatter implements \Iterator
+abstract class Formatter implements \Iterator
 {
 
     protected

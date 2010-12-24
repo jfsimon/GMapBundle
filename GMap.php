@@ -5,6 +5,7 @@ namespace Bundle\GMapBundle;
 use Bundle\GMapBundle\Encoder\PolylineEncoder;
 use Bundle\GMapBundle\Webservice\Geocoder;
 use Bundle\GMapBundle\Webservice\Elevation;
+use Bundle\GMapBundle\Webservice\Directions;
 
 class GMap
 {
@@ -12,9 +13,10 @@ class GMap
     protected
         $polylineEncoder,
         $geocoder,
-        $elevation;
+        $elevation,
+        $directions;
 
-    public function __construct(PolylineEncoder $polylineEncoder, Geocoder $geocoder, Elevation $elevation)
+    public function __construct(PolylineEncoder $polylineEncoder, Geocoder $geocoder, Elevation $elevation, Directions $directions)
     {
         $this->polylineEncoder = $polylineEncoder;
         $this->geocoder = $geocoder;
@@ -52,6 +54,39 @@ class GMap
         }
 
         return $this->elevation->locationsElevation($pathOrLocations, $options);
+    }
+
+    public function directions($origin, $destination, array $array1 = array(), array $array2 = array())
+    {
+        $waypoints = array();
+        $parameters = array();
+
+        if(count($array1)) {
+            if($this->isNumericArray($array1)) {
+                $waypoints = $array1;
+            } else {
+                $parameters = $array1;
+            }
+        }
+
+        if(count($array2)) {
+            if($this->isNumericArray($array2)) {
+                $waypoints = $array2;
+            } else {
+                $parameters = $array2;
+            }
+        }
+
+        if(count($waypoints)) {
+            return $this->directions->waypointsDirections($origin, $destination, $waypoints, $parameters);
+        }
+
+        return $this->directions->directions($origin, $destination, $parameters);
+    }
+
+    protected function isNumericArray(array $array)
+    {
+        return array_keys($array) == range(0, count($array) - 1);
     }
 
 }

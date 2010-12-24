@@ -8,7 +8,7 @@
     	
     	<parameter key="gmap.class">Bundle\GMapBundle\GMap</parameter>
 		
-		<parameter key="gmap.polyline_encoder.class">Bundle\GMapBundle\Encoder\PolylineEncoder</parameter>
+		<parameter key="gmap.polyline_encoder.class">Bundle\GMapBundle\Tool\PolylineEncoder</parameter>
         <parameter key="gmap.polyline_encoder.options" type="collection">
             <parameter key="accuracy">5</parameter>
             <parameter key="levels">4</parameter>
@@ -30,7 +30,6 @@
 			<parameter key="bounds"></parameter>
         </parameter>
 		
-		
 		<parameter key="gmap.elevation.class">Bundle\GMapBundle\Webservice\Elevation</parameter>
         <parameter key="gmap.elevation.options" type="collection">
         	<!-- service configuration -->
@@ -40,6 +39,23 @@
             <parameter key="collection">Bundle\GMapBundle\Formatter\ElevationCollection</parameter>
 			<!-- default parameters -->
             <parameter key="sensor">false</parameter>
+        </parameter>
+		
+		<parameter key="gmap.directions.class">Bundle\GMapBundle\Webservice\Directions</parameter>
+        <parameter key="gmap.directions.options" type="collection">
+            <!-- service configuration -->
+            <parameter key="url">http://maps.googleapis.com/maps/api/directions</parameter>
+            <parameter key="format">json</parameter>
+            <parameter key="formatter">Bundle\GMapBundle\Formatter\Route</parameter>
+            <parameter key="collection">Bundle\GMapBundle\Formatter\RouteCollection</parameter>
+            <!-- default parameters -->
+            <parameter key="sensor">false</parameter>
+			<parameter key="language">false</parameter>
+			<parameter key="region"></parameter>
+            <parameter key="mode">driving</parameter>
+            <parameter key="alternatives">false</parameter>
+            <parameter key="avoid"></parameter>
+			<parameter key="units">metric</parameter>
         </parameter>
 		
     </parameters>
@@ -60,10 +76,16 @@
             <argument>%gmap.elevation.options%</argument>
         </service>
 		
+		<service id="gmap.directions" class="%gmap.directions.class%">
+            <argument type="service" id="service_container" />
+            <argument>%gmap.directions.options%</argument>
+        </service>
+		
     	<service id="gmap" class="%gmap.class%">
             <argument type="service" id="gmap.polyline_encoder" />
             <argument type="service" id="gmap.geocoder" />
             <argument type="service" id="gmap.elevation" />
+			<argument type="service" id="gmap.directions" />
         </service>
 		
     </services>

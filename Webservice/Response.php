@@ -10,15 +10,19 @@ class Response
     const OVER_QUERY_LIMIT = 'OVER_QUERY_LIMIT';
     const REQUEST_DENIED = 'REQUEST_DENIED';
     const INVALID_REQUEST = 'INVALID_REQUEST';
+    const MAX_WAYPOINTS_EXCEEDED = 'MAX_WAYPOINTS_EXCEEDED';
+    const UNKNOWN_ERROR = 'UNKNOWN_ERROR';
 
     protected
         $status,
+        $namespace,
         $result,
         $length;
 
-    public function __construct($content, $format='json')
+    public function __construct($content, $namespace, $format='json')
     {
         $parse = 'parse'.ucfirst($format);
+        $this->namespace = $namespace;
         $this->setup($this->$parse($content));
     }
 
@@ -57,8 +61,8 @@ class Response
         $this->status = $data['status'];
 
         if($this->isOk()) {
-            $this->result = $data['results'];
-            $this->length = count($data['results']);
+            $this->result = $data[$this->namespace];
+            $this->length = count($data[$this->namespace]);
         }
     }
 

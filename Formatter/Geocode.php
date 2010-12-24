@@ -3,8 +3,9 @@
 namespace Bundle\GMapBundle\Formatter;
 
 use Bundle\GMapBundle\Formatter\Formatter;
+use Bundle\GMapBundle\Formatter\LocationInterface;
 
-class Geocode extends Formatter implements \Iterator
+class Geocode extends Formatter implements \Iterator, LocationInterface
 {
 
     protected $address;
@@ -26,6 +27,11 @@ class Geocode extends Formatter implements \Iterator
         } else {
             return $this->getLat().','.$this->getLng();
         }
+    }
+
+    public function __toString()
+    {
+        return $this->getLatLng(false);
     }
 
     public function getAddress()
@@ -83,6 +89,11 @@ class Geocode extends Formatter implements \Iterator
                 $this->address[$type]['short'][] = $component['short_name'];
             }
         }
+    }
+
+    protected function uncache()
+    {
+        $this->address = null;
     }
 
 }
