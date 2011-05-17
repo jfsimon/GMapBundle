@@ -49,17 +49,18 @@ You're done !
 Run the tests
 -------------
 
-1.  Register the routing - for example, add the following code in your `app/config/routing.yml` file :
+1.  Register the routing. Add the following code in your `app/config/routing_dev.yml` file - this will
+register the routes in your dev region only :
     
         _Tests_GMapBundle:
-            resource: GMapBundle/Resources/config/routing.yml
+            resource: "@GMapBundle/Resources/config/routing.yml"
             
 2.  Run the tests with phpunit, the following tests are available :
     
-        phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/ServiceTests.php
-        phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/PolylineEncoderTests.php
-        phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/GeocoderTests.php
-        phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/ElevationTests.php
+        phpunit --c app/ vendor/bundles/GMapBundle/Tests/ServiceTests.php
+        phpunit --c app/ vendor/bundles/GMapBundle/Tests/PolylineEncoderTests.php
+        phpunit --c app/ vendor/bundles/GMapBundle/Tests/GeocoderTests.php
+        phpunit --c app/ vendor/bundles/GMapBundle/Tests/ElevationTests.php
         
    
 How to use

@@ -16,7 +16,7 @@ class ServiceTests extends WebTestCase
     public function testServiceClass()
     {
         $crawler = $this->createClient()->request('GET', '/_tests/GMapBundle/ServiceClass');
-        $this->assertEquals('Bundle\GMapBundle\GMap', $crawler->text());
+        $this->assertEquals('GMapBundle\GMap', $crawler->text());
     }
 
 }
