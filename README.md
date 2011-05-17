@@ -25,15 +25,23 @@ Before to use the bundle, you have to install it, and optionaly test it (dont fo
 Intall the bundle
 -----------------
 
-1.  Add the sources to your Bundle directory - from the root directory of your project, paste the following command :
+1.  Add the sources to your bundles directory - from the root directory of your project, paste the following command :
 
-        git submodule add git@github.com:jfsimon/GMapBundle.git src/Bundle/GMapBundle
+        git submodule add git@github.com:alephnullplex/GMapBundle.git vendor/bundles/GMapBundle
+
         
-2.  Register the bundle in your `AppKernel` class
+2.  Register the bundle in your with the auto loader and AppKernel:
+
+        // app/autoload.php in registerNamespaces()
+        'GMapBundle'       => __DIR__.'/../vendor/bundles',
+
+        // app/AppKernel.php in registerBundles()
+        new GMapBundle\GMapBundle(),
 
 3.  Register the bundle config in your app config file - for example, add the following minimalist code in your `app/config/config.yml` file :
     
-        gmap.config: ~
+        gmap:
+          config: ~
 
 You're done !
 
