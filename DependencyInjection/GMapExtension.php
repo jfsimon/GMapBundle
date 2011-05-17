@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\GMapBundle\DependencyInjection;
+namespace GMapBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;

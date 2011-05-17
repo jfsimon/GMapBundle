@@ -1,12 +1,12 @@
 <?php
 
-namespace Bundle\GMapBundle\Controller;
+namespace GMapBundle\Controller;
 
-use Bundle\GMapBundle\Formatter;
+use GMapBundle\Formatter;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Bundle\GMapBundle\Formatter\PolylineEncoder;
-use Bundle\GMapBundle\Webservice\Elevation;
+use GMapBundle\Formatter\PolylineEncoder;
+use GMapBundle\Webservice\Elevation;
 
 class TestsController extends Controller
 {

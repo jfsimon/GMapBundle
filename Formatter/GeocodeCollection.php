@@ -1,8 +1,8 @@
 <?php
 
-namespace Bundle\GMapBundle\Formatter;
+namespace GMapBundle\Formatter;
 
-use Bundle\GMapBundle\Formatter\Collection;
+use GMapBundle\Formatter\Collection;
 
 class GeocodeCollection extends Collection implements \Iterator
 {

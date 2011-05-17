@@ -1,10 +1,10 @@
 <?php
 
-namespace Bundle\GMapBundle;
+namespace GMapBundle;
 
-use Bundle\GMapBundle\Encoder\PolylineEncoder;
-use Bundle\GMapBundle\Webservice\Geocoder;
-use Bundle\GMapBundle\Webservice\Elevation;
+use GMapBundle\Encoder\PolylineEncoder;
+use GMapBundle\Webservice\Geocoder;
+use GMapBundle\Webservice\Elevation;
 
 class GMap
 {

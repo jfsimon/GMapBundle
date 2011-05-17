@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\GMapBundle\Tests;
+namespace GMapBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

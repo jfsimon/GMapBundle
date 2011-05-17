@@ -1,15 +1,15 @@
 <?php
 
-namespace Bundle\GMapBundle\Webservice;
+namespace GMapBundle\Webservice;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Bundle\GMapBundle\Webservice\Request;
-use Bundle\GMapBundle\Webservice\Response;
-use Bundle\GMapBundle\Webservice\Exception;
-use Bundle\GMapBundle\Exception\InvalidRequestException;
-use Bundle\GMapBundle\Exception\OverQueryLimitException;
-use Bundle\GMapBundle\Exception\RequestDeniedException;
-use Bundle\GMapBundle\Exception\ZeroResultsException;
+use GMapBundle\Webservice\Request;
+use GMapBundle\Webservice\Response;
+use GMapBundle\Webservice\Exception;
+use GMapBundle\Exception\InvalidRequestException;
+use GMapBundle\Exception\OverQueryLimitException;
+use GMapBundle\Exception\RequestDeniedException;
+use GMapBundle\Exception\ZeroResultsException;
 
 abstract class Webservice
 {

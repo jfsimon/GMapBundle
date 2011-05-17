@@ -6,9 +6,9 @@
 
     <parameters>
     	
-    	<parameter key="g_map.class">Bundle\GMapBundle\GMap</parameter>
+    	<parameter key="g_map.class">GMapBundle\GMap</parameter>
 		
-		<parameter key="g_map.polyline_encoder.class">Bundle\GMapBundle\Encoder\PolylineEncoder</parameter>
+		<parameter key="g_map.polyline_encoder.class">GMapBundle\Encoder\PolylineEncoder</parameter>
         <parameter key="g_map.polyline_encoder.options" type="collection">
             <parameter key="accuracy">5</parameter>
             <parameter key="levels">4</parameter>
@@ -16,13 +16,13 @@
             <parameter key="endpoints">true</parameter>
         </parameter>
 		
-		<parameter key="g_map.geocoder.class">Bundle\GMapBundle\Webservice\Geocoder</parameter>
+		<parameter key="g_map.geocoder.class">GMapBundle\Webservice\Geocoder</parameter>
         <parameter key="g_map.geocoder.options" type="collection">
         	<!-- service configuration -->
             <parameter key="url">http://maps.googleapis.com/maps/api/geocode</parameter>
 			<parameter key="format">json</parameter>
-			<parameter key="formatter">Bundle\GMapBundle\Formatter\Geocode</parameter>
-            <parameter key="collection">Bundle\GMapBundle\Formatter\GeocodeCollection</parameter>
+			<parameter key="formatter">GMapBundle\Formatter\Geocode</parameter>
+            <parameter key="collection">GMapBundle\Formatter\GeocodeCollection</parameter>
 			<!-- default parameters -->
 			<parameter key="sensor">false</parameter>
 			<parameter key="language"></parameter>
@@ -31,13 +31,13 @@
         </parameter>
 		
 		
-		<parameter key="g_map.elevation.class">Bundle\GMapBundle\Webservice\Elevation</parameter>
+		<parameter key="g_map.elevation.class">GMapBundle\Webservice\Elevation</parameter>
         <parameter key="g_map.elevation.options" type="collection">
         	<!-- service configuration -->
             <parameter key="url">http://maps.googleapis.com/maps/api/elevation</parameter>
             <parameter key="format">json</parameter>
-			<parameter key="formatter">Bundle\GMapBundle\Formatter\Elevation</parameter>
-            <parameter key="collection">Bundle\GMapBundle\Formatter\ElevationCollection</parameter>
+			<parameter key="formatter">GMapBundle\Formatter\Elevation</parameter>
+            <parameter key="collection">GMapBundle\Formatter\ElevationCollection</parameter>
 			<!-- default parameters -->
             <parameter key="sensor">false</parameter>
         </parameter>

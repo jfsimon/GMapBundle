@@ -1,8 +1,8 @@
 <?php
 
-namespace Bundle\GMapBundle\Webservice;
+namespace GMapBundle\Webservice;
 
-use Bundle\GMapBundle\Webservice\Webservice;
+use GMapBundle\Webservice\Webservice;
 
 class Geocoder extends Webservice
 {
