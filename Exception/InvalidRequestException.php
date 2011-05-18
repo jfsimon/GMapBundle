@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\GMapBundle\Exception;
+namespace GMapBundle\Exception;
 
 class InvalidRequestException extends \Exception
 {

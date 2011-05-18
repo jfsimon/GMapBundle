@@ -1,28 +1,28 @@
 <?xml version="1.0" ?>
 
-<container xmlns="http://www.symfony-project.org/schema/dic/services"
+<container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
     	
-    	<parameter key="gmap.class">Bundle\GMapBundle\GMap</parameter>
+    	<parameter key="g_map.class">GMapBundle\GMap</parameter>
 		
-		<parameter key="gmap.polyline_encoder.class">Bundle\GMapBundle\Encoder\PolylineEncoder</parameter>
-        <parameter key="gmap.polyline_encoder.options" type="collection">
+		<parameter key="g_map.polyline_encoder.class">GMapBundle\Encoder\PolylineEncoder</parameter>
+        <parameter key="g_map.polyline_encoder.options" type="collection">
             <parameter key="accuracy">5</parameter>
             <parameter key="levels">4</parameter>
             <parameter key="zoom">3</parameter>
             <parameter key="endpoints">true</parameter>
         </parameter>
 		
-		<parameter key="gmap.geocoder.class">Bundle\GMapBundle\Webservice\Geocoder</parameter>
-        <parameter key="gmap.geocoder.options" type="collection">
+		<parameter key="g_map.geocoder.class">GMapBundle\Webservice\Geocoder</parameter>
+        <parameter key="g_map.geocoder.options" type="collection">
         	<!-- service configuration -->
             <parameter key="url">http://maps.googleapis.com/maps/api/geocode</parameter>
 			<parameter key="format">json</parameter>
-			<parameter key="formatter">Bundle\GMapBundle\Formatter\Geocode</parameter>
-            <parameter key="collection">Bundle\GMapBundle\Formatter\GeocodeCollection</parameter>
+			<parameter key="formatter">GMapBundle\Formatter\Geocode</parameter>
+            <parameter key="collection">GMapBundle\Formatter\GeocodeCollection</parameter>
 			<!-- default parameters -->
 			<parameter key="sensor">false</parameter>
 			<parameter key="language"></parameter>
@@ -31,13 +31,13 @@
         </parameter>
 		
 		
-		<parameter key="gmap.elevation.class">Bundle\GMapBundle\Webservice\Elevation</parameter>
-        <parameter key="gmap.elevation.options" type="collection">
+		<parameter key="g_map.elevation.class">GMapBundle\Webservice\Elevation</parameter>
+        <parameter key="g_map.elevation.options" type="collection">
         	<!-- service configuration -->
             <parameter key="url">http://maps.googleapis.com/maps/api/elevation</parameter>
             <parameter key="format">json</parameter>
-			<parameter key="formatter">Bundle\GMapBundle\Formatter\Elevation</parameter>
-            <parameter key="collection">Bundle\GMapBundle\Formatter\ElevationCollection</parameter>
+			<parameter key="formatter">GMapBundle\Formatter\Elevation</parameter>
+            <parameter key="collection">GMapBundle\Formatter\ElevationCollection</parameter>
 			<!-- default parameters -->
             <parameter key="sensor">false</parameter>
         </parameter>
@@ -46,24 +46,24 @@
 
     <services>
     	
-		<service id="gmap.polyline_encoder" class="%gmap.polyline_encoder.class%">
-            <argument>%gmap.polyline_encoder.options%</argument>
+		<service id="g_map.polyline_encoder" class="%g_map.polyline_encoder.class%">
+            <argument>%g_map.polyline_encoder.options%</argument>
         </service>
 		
-    	<service id="gmap.geocoder" class="%gmap.geocoder.class%">
+    	<service id="g_map.geocoder" class="%g_map.geocoder.class%">
     		<argument type="service" id="service_container" />
-            <argument>%gmap.geocoder.options%</argument>
+            <argument>%g_map.geocoder.options%</argument>
         </service>
 		
-		<service id="gmap.elevation" class="%gmap.elevation.class%">
+		<service id="g_map.elevation" class="%g_map.elevation.class%">
 			<argument type="service" id="service_container" />
-            <argument>%gmap.elevation.options%</argument>
+            <argument>%g_map.elevation.options%</argument>
         </service>
 		
-    	<service id="gmap" class="%gmap.class%">
-            <argument type="service" id="gmap.polyline_encoder" />
-            <argument type="service" id="gmap.geocoder" />
-            <argument type="service" id="gmap.elevation" />
+    	<service id="g_map" class="%g_map.class%">
+            <argument type="service" id="g_map.polyline_encoder" />
+            <argument type="service" id="g_map.geocoder" />
+            <argument type="service" id="g_map.elevation" />
         </service>
 		
     </services>

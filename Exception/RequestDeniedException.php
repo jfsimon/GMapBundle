@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\GMapBundle\Exception;
+namespace GMapBundle\Exception;
 
 class RequestDeniedException extends \Exception
 {

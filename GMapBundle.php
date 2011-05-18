@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\GMapBundle;
+namespace GMapBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

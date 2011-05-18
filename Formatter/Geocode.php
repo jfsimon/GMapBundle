@@ -1,8 +1,8 @@
 <?php
 
-namespace Bundle\GMapBundle\Formatter;
+namespace GMapBundle\Formatter;
 
-use Bundle\GMapBundle\Formatter\Formatter;
+use GMapBundle\Formatter\Formatter;
 
 class Geocode extends Formatter implements \Iterator
 {

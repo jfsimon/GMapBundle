@@ -1,64 +1,65 @@
 <?php
 
-namespace Bundle\GMapBundle\Controller;
+namespace GMapBundle\Controller;
 
-use Bundle\GMapBundle\Formatter;
+use GMapBundle\Formatter;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Bundle\GMapBundle\Formatter\PolylineEncoder;
-use Bundle\GMapBundle\Webservice\Elevation;
+use Symfony\Component\HttpFoundation\Response;
+use GMapBundle\Formatter\PolylineEncoder;
+use GMapBundle\Webservice\Elevation;
 
 class TestsController extends Controller
 {
 
     public function serviceExistsAction()
     {
-        return $this->createResponse($this->has('gmap') ? 'yes' : 'no');
+        return $this->createResponse($this->has('g_map') ? 'yes' : 'no');
     }
 
     public function serviceClassAction()
     {
-        return $this->createResponse(get_class($this->get('gmap')));
+        return $this->createResponse(get_class($this->get('g_map')));
     }
 
     public function geocoderAddress1Action($address)
     {
-        $result = $this->get('gmap')->geocode($address);
+        $result = $this->get('g_map')->geocode($address);
         $result = $this->getFirstStreetAddress($result);
         return $this->createResponse($result->getLatLng(false));
     }
 
     public function geocoderAddress2Action($address)
     {
-        $result = $this->get('gmap')->geocode($address);
+        $result = $this->get('g_map')->geocode($address);
         $result = $this->getFirstStreetAddress($result);
         return $this->createResponse(implode("\n", $result->getLatLng(true)));
     }
 
     public function geocoderLatLng1Action($lat, $lng)
     {
-        $result = $this->get('gmap')->geocode(array($lat, $lng));
+        $result = $this->get('g_map')->geocode(array($lat, $lng));
         $result = $this->getFirstStreetAddress($result);
         return $this->createResponse($result->getAddress());
     }
 
     public function geocoderLatLng2Action($lat, $lng)
     {
-        $result = $this->get('gmap')->geocode(array($lat, $lng));
+        $result = $this->get('g_map')->geocode(array($lat, $lng));
         $result = $this->getFirstStreetAddress($result);
         return $this->createResponse($result->getAddress(true));
     }
 
     public function geocoderLatLng3Action($latLng)
     {
-        $result = $this->get('gmap')->geocode($latLng);
+        $result = $this->get('g_map')->geocode($latLng);
         $result = $this->getFirstStreetAddress($result);
         return $this->createResponse($result->getAddress());
     }
 
     public function geocoderComponents1Action($address)
     {
-        $result = $this->get('gmap')->geocode($address);
+        $result = $this->get('g_map')->geocode($address);
         $result = $this->getFirstStreetAddress($result);
         return $this->createResponse(implode("\n", array(
             $result->getAddressComponent('street_number'),
@@ -71,7 +72,7 @@ class TestsController extends Controller
 
     public function geocoderComponents2Action($address)
     {
-        $result = $this->get('gmap')->geocode($address);
+        $result = $this->get('g_map')->geocode($address);
         $result = $this->getFirstStreetAddress($result);
         return $this->createResponse(implode("\n", array(
             $result->getAddressComponent('administrative_area_level_1'),
@@ -82,7 +83,7 @@ class TestsController extends Controller
 
     public function geocoderComponents3Action($address)
     {
-        $result = $this->get('gmap')->geocode($address);
+        $result = $this->get('g_map')->geocode($address);
         $result = $this->getFirstStreetAddress($result);
         return $this->createResponse(implode("\n", array(
             $result->getAddressComponent('country', true),
@@ -99,7 +100,7 @@ class TestsController extends Controller
             array(43.8772535, 5.3397612),
             array(42.8772535, 8.3397612),
         );
-        $encoded = $this->get('gmap')->encodePolyline($polyline);
+        $encoded = $this->get('g_map')->encodePolyline($polyline);
         return $this->createResponse($encoded['points']."\n".$encoded['levels']);
     }
 
@@ -112,7 +113,7 @@ class TestsController extends Controller
             array(42.8772535, 8.3397612),
         );
         $result = array();
-        foreach($this->get('gmap')->elevation($points) as $elevation) {
+        foreach($this->get('g_map')->elevation($points) as $elevation) {
             $result[] = $elevation->getElevation();
         }
         return $this->createResponse(implode("\n", $result));
@@ -126,6 +127,12 @@ class TestsController extends Controller
             return $result->filterType('street_address')->getOne(0);
         }
         return $result;
+    }
+
+    private function createResponse($response)
+    {
+        return new Response($response);
+
     }
 
 }

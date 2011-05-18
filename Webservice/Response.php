@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\GMapBundle\Webservice;
+namespace GMapBundle\Webservice;
 
 class Response
 {
