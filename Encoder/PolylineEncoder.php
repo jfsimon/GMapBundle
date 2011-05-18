@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\GMapBundle\Encoder;
+namespace GMapBundle\Encoder;
 
 // based on http://www.scribd.com/doc/3599978/PolylineEncoder-class-php
 

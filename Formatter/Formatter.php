@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\GMapBundle\Formatter;
+namespace GMapBundle\Formatter;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

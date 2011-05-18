@@ -25,15 +25,23 @@ Before to use the bundle, you have to install it, and optionaly test it (dont fo
 Intall the bundle
 -----------------
 
-1.  Add the sources to your Bundle directory - from the root directory of your project, paste the following command :
+1.  Add the sources to your bundles directory - from the root directory of your project, paste the following command :
 
-        git submodule add git@github.com:jfsimon/GMapBundle.git src/Bundle/GMapBundle
+        git submodule add git@github.com:alephnullplex/GMapBundle.git vendor/bundles/GMapBundle
+
         
-2.  Register the bundle in your `AppKernel` class
+2.  Register the bundle in your with the auto loader and AppKernel:
+
+        // app/autoload.php in registerNamespaces()
+        'GMapBundle'       => __DIR__.'/../vendor/bundles',
+
+        // app/AppKernel.php in registerBundles()
+        new GMapBundle\GMapBundle(),
 
 3.  Register the bundle config in your app config file - for example, add the following minimalist code in your `app/config/config.yml` file :
     
-        gmap.config: ~
+        gmap:
+          config: ~
 
 You're done !
 
@@ -41,17 +49,18 @@ You're done !
 Run the tests
 -------------
 
-1.  Register the routing - for example, add the following code in your `app/config/routing.yml` file :
+1.  Register the routing. Add the following code in your `app/config/routing_dev.yml` file - this will
+register the routes in your dev region only :
     
         _Tests_GMapBundle:
-            resource: GMapBundle/Resources/config/routing.yml
+            resource: "@GMapBundle/Resources/config/routing.yml"
             
 2.  Run the tests with phpunit, the following tests are available :
     
-        phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/ServiceTests.php
-        phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/PolylineEncoderTests.php
-        phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/GeocoderTests.php
-        phpunit --configuration app/phpunit.xml.dist src/Bundle/GMapBundle/Tests/ElevationTests.php
+        phpunit --c app/ vendor/bundles/GMapBundle/Tests/ServiceTests.php
+        phpunit --c app/ vendor/bundles/GMapBundle/Tests/PolylineEncoderTests.php
+        phpunit --c app/ vendor/bundles/GMapBundle/Tests/GeocoderTests.php
+        phpunit --c app/ vendor/bundles/GMapBundle/Tests/ElevationTests.php
         
    
 How to use
