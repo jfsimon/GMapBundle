@@ -1,9 +1,9 @@
 GMapBundle : The GMap webservices made easy for your Symfony2 applications
 --------------------------------------------------------------------------
 
-**In progress** : This bundle is under active developpement, new features will be regularly appended.
+**In progress** : This bundle is under active developement, new features will be regularly appended.
 
-**It works** : This bundle is under Test Driven Developpement control, so every features mentioned below will really work.
+**It works** : This bundle is under Test Driven Developement control, so every features mentioned below will really work.
 
 **Current implementation** : Just include (for now) the following services :
 
@@ -19,7 +19,7 @@ GMapBundle : The GMap webservices made easy for your Symfony2 applications
 The basics
 ==========
 
-Before to use the bundle, you have to install it, and optionaly test it (dont forget to post issues on github !).
+In order to use this bundle you have to install it, and then optionally test it ([dont forget to post issues on github!](https://github.com/jfsimon/GMapBundle/issues)).
 
 
 Intall the bundle
@@ -70,7 +70,7 @@ This bundle offers a new service accessible from your controller. To access the 
 
     $gmap = $this->get('gmap');
     
-These services are subject to a query limit of 2,500 geolocation requests per day (for each service, is suppose).
+These services are subject to a query limit of 2,500 geolocation requests per day (for each service, I suppose).
 
 
 The webservices
@@ -101,7 +101,7 @@ The response
 -  If a request returns more tha one result, you get a `Collection` object
 -  `Collection` objects are Iterable and, for convenience, `Formatter` objects are Iterable too.
 -  Iterate over a `Collection` object give you `Formatter` objects.
--  Each webservice returns his own `Formatter` and `Collection` objects with apropriate methods.
+-  Each webservice returns his own `Formatter` and `Collection` objects with appropriate methods.
 
 
 The geocoder webservice
@@ -132,7 +132,7 @@ As second parameter, you can provide an associative array of options :
 -  language : The language in which to return results.
 -  sensor (default to false) : Indicates whether or not the geocoding request comes from a device with a location sensor.
 
-More explanations on these options on
+More explanations of these options in
 [Google's documentation](http://code.google.com/apis/maps/documentation/geocoding/#Types).
 
 Many requests get you a collection, you can filter the address by type :
@@ -196,7 +196,7 @@ The geocode method returns a Geocode object wich comes with several methods to g
     // get a sublocality
     $str = $home->getAddressComponent('sublocality'); // '9ème Arrondissement Paris'
 
-And so on ... full list of components available on
+And so on ... full list of components available in
 [Google's documentation](http://code.google.com/apis/maps/documentation/geocoding/#Types).
 If a component has several values, it returns an array.
 
@@ -220,7 +220,7 @@ For example :
             bounds : ~ # default bounds option for each requests (see above)
             region : ~ # default region option for each requests (see above)
             language : ~ # default language option for each requests (see above)
-            sensor : false // wether the browser has GPS functionalities
+            sensor : false // whether the browser has GPS functionalities
 
             
 The elevation webservice
@@ -241,7 +241,7 @@ There is just one parameter :
     gmap.options:
         elevation:
             // the 4 common parameters
-            sensor : false // wether the browser has GPS functionalities
+            sensor : false // whether the browser has GPS functionalities
 
 
 The tool service
@@ -266,10 +266,10 @@ Some options are available, here is an exemple with the YML format :
     gmap.options:
         polyline_encoder:
             accuracy: 5 # should not be changed !
-            levels: 4 # the lesvels number (called numLevels in the Google's documentation)
+            levels: 4 # the levels number (called numLevels in the Google's documentation)
             zoom: 3 # the zoom factor
             endpoints: true # indicate if endpoints should be forced
 
-You can read more about in this stuff in the
+You can read more about in this stuff in 
 [Google's documentation](http://code.google.com/apis/maps/documentation/utilities/polylinealgorithm.html).
 
