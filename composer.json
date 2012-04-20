@@ -1,0 +1,20 @@
+{
+    "name": "jfsimon/gmap-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony GMap bundle",
+    "keywords": ["gmap", "google maps"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jean-François Simon",
+            "email": "contact@jfsimon.fr"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+    },
+    "autoload": {
+        "psr-0": { "GMapBundle": "" }
+    },
+    "target-dir": "GMapBundle"
+}
