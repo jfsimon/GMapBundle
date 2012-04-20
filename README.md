@@ -40,7 +40,7 @@ Intall the bundle
 
 3.  Register the bundle config in your app config file - for example, add the following minimalist code in your `app/config/config.yml` file :
     
-        gmap:
+        g_map:
           config: ~
 
 You're done !
